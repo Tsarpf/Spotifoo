@@ -1,0 +1,30 @@
+aes.lo: aes.c aes.h
+auth.lo: auth.c network.h auth.h session.h despotify.h shn.h buf.h \
+ puzzle.h util.h sha1.h hmac.h
+buf.lo: buf.c buf.h
+cache.lo: cache.c util.h cache.h
+channel.lo: channel.c network.h channel.h util.h
+commands.lo: commands.c buf.h channel.h commands.h session.h despotify.h \
+ shn.h packet.h util.h
+dns.lo: dns.c network.h dns.h
+ezxml.lo: ezxml.c ezxml.h
+handlers.lo: handlers.c network.h channel.h commands.h session.h \
+ despotify.h shn.h handlers.h packet.h util.h xml.h
+keyexchange.lo: keyexchange.c network.h auth.h session.h despotify.h shn.h \
+ buf.h hmac.h keyexchange.h util.h
+packet.lo: packet.c network.h session.h despotify.h shn.h channel.h \
+ commands.h packet.h util.h
+puzzle.lo: puzzle.c network.h puzzle.h session.h despotify.h shn.h util.h \
+ sha1.h
+session.lo: session.c network.h dns.h keyexchange.h session.h despotify.h \
+ shn.h packet.h util.h
+shn.lo: shn.c shn.h
+sndqueue.lo: sndqueue.c sndqueue.h despotify.h util.h
+util.lo: util.c network.h util.h
+network.lo: network.c network.h
+despotify.lo: despotify.c aes.h auth.h session.h despotify.h shn.h buf.h \
+ cache.h channel.h commands.h ezxml.h handlers.h keyexchange.h network.h \
+ packet.h sha1.h sndqueue.h util.h xml.h
+sha1.lo: sha1.c sha1.h
+hmac.lo: hmac.c sha1.h
+xml.lo: xml.c despotify.h ezxml.h util.h xml.h
