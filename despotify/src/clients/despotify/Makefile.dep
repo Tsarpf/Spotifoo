@@ -1,0 +1,18 @@
+commands.o: commands.c commands.h event.h session.h ../../lib/despotify.h \
+ ui.h ui_footer.h ui_log.h
+event.o: event.c event.h
+main.o: main.c event.h session.h ../../lib/despotify.h ui.h
+session.o: session.c audio.h ../../lib/despotify.h main.h session.h \
+ ui_footer.h ui.h ui_log.h ui_sidebar.h
+ui.o: ui.c commands.h event.h session.h ../../lib/despotify.h ui.h \
+ ui_footer.h ui_help.h ui_log.h ui_sidebar.h ui_splash.h ui_tracklist.h
+ui_footer.o: ui_footer.c commands.h event.h session.h \
+ ../../lib/despotify.h ui_footer.h ui.h
+ui_help.o: ui_help.c ui_help.h ui.h
+ui_log.o: ui_log.c event.h ui_log.h ui.h
+ui_sidebar.o: ui_sidebar.c event.h session.h ../../lib/despotify.h \
+ ui_sidebar.h ui.h ui_tracklist.h
+ui_splash.o: ui_splash.c ui_splash.h ui.h
+ui_tracklist.o: ui_tracklist.c event.h session.h ../../lib/despotify.h \
+ ui_log.h ui.h ui_tracklist.h
+libao.o: libao.c audio.h ../../lib/despotify.h ../../lib/util.h

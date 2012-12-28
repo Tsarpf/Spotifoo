@@ -19,7 +19,6 @@ endif
 
 # Windows specifics
 ifeq ($(firstword $(subst _, ,$(shell uname -s))), MINGW32)
-	LDCONFIG = false
     LDFLAGS += -lwsock32 -lDnsapi
 endif
 

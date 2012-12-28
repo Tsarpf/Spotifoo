@@ -6,7 +6,7 @@
 export
 
 CFLAGS = -Wall -Wextra -ggdb -std=gnu99
-#LDFLAGS = -lz -lvorbisfile
+LDFLAGS = -lz -lvorbisfile
 
 LD = $(CC)
 
@@ -28,7 +28,7 @@ endif
 
 ifeq ($(MP3_SUPPORT), 1)
     CFLAGS += -DMP3_SUPPORT
-#    LDFLAGS += -lmpg123
+    LDFLAGS += -lmpg123
 endif
 
 # Mac OS X specifics
@@ -40,9 +40,9 @@ endif
 
 # windows specifics
 ifeq ($(firstword $(subst _, ,$(shell uname -s))), MINGW32)
-#    LDFLAGS += -leay32
+    LDFLAGS += -leay32
 else
-#    LDFLAGS += -lcrypto
+    LDFLAGS += -lcrypto
 endif
 
 # gcc2 & 3 are ancient and doesn't support -Wno-pointer-sign

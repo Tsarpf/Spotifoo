@@ -20,7 +20,7 @@ CLIENT_GATEWAY   = 1
 # NCURSES_INCLUDE = /usr/local/include/ncursesw
 
 ## Choose audio backend
-LINUX_BACKEND = pulseaudio
+LINUX_BACKEND = libao
 
 ## Add more CFLAGS
 # CFLAGS += -DDEBUG_SNDQUEUE

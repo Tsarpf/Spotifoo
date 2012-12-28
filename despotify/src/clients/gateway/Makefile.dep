@@ -1,0 +1,32 @@
+gw-core.o: gw-core.c ../../lib/network.h ../../lib/auth.h \
+ ../../lib/session.h ../../lib/despotify.h ../../lib/shn.h \
+ ../../lib/commands.h ../../lib/channel.h ../../lib/dns.h gw.h \
+ ../../lib/buf.h ../../lib/session.h gw-browse.h gw-handlers.h \
+ ../../lib/packet.h gw-http.h gw-image.h gw-playlist.h gw-search.h \
+ gw-stream.h ../../lib/handlers.h ../../lib/keyexchange.h \
+ ../../lib/util.h
+gw-browse.o: gw-browse.c ../../lib/buf.h ../../lib/channel.h \
+ ../../lib/commands.h ../../lib/session.h ../../lib/despotify.h \
+ ../../lib/shn.h ../../lib/channel.h gw.h ../../lib/session.h gw-browse.h \
+ ../../lib/util.h
+gw-handlers.o: gw-handlers.c gw.h ../../lib/buf.h ../../lib/session.h \
+ ../../lib/despotify.h ../../lib/shn.h gw-handlers.h ../../lib/packet.h \
+ ../../lib/session.h
+gw-image.o: gw-image.c ../../lib/buf.h ../../lib/channel.h \
+ ../../lib/commands.h ../../lib/session.h ../../lib/despotify.h \
+ ../../lib/shn.h ../../lib/channel.h gw.h ../../lib/session.h gw-image.h \
+ ../../lib/util.h
+gw-playlist.o: gw-playlist.c ../../lib/buf.h ../../lib/channel.h \
+ ../../lib/commands.h ../../lib/session.h ../../lib/despotify.h \
+ ../../lib/shn.h ../../lib/channel.h gw.h ../../lib/session.h \
+ gw-playlist.h ../../lib/util.h
+gw-search.o: gw-search.c ../../lib/buf.h ../../lib/channel.h \
+ ../../lib/commands.h ../../lib/session.h ../../lib/despotify.h \
+ ../../lib/shn.h ../../lib/channel.h gw.h ../../lib/session.h gw-search.h
+gw-stream.o: gw-stream.c ../../lib/aes.h ../../lib/buf.h \
+ ../../lib/channel.h ../../lib/commands.h ../../lib/session.h \
+ ../../lib/despotify.h ../../lib/shn.h ../../lib/channel.h gw.h \
+ ../../lib/session.h gw-stream.h ../../lib/util.h
+gw-http.o: gw-http.c ../../lib/network.h base64.h ../../lib/buf.h gw.h \
+ ../../lib/session.h ../../lib/despotify.h ../../lib/shn.h gw-http.h
+base64.o: base64.c base64.h
