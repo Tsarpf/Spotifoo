@@ -1,2 +1,0 @@
-simple.o: simple.c audio.h ../../lib/despotify.h ../../lib/util.h
-libao.o: libao.c audio.h ../../lib/despotify.h
