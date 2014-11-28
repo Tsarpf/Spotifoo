@@ -37,7 +37,6 @@
 
 #include "audio.h"
 
-extern "C" {
 
 #define NUM_BUFFERS 3
 
@@ -62,6 +61,7 @@ extern "C" {
 
 	static void* audio_start(void *aux)
 	{
+
 		audio_fifo_t *af = (audio_fifo_t*) aux;
 		audio_fifo_data_t *afd;
 		unsigned int frame = 0;
@@ -73,7 +73,12 @@ extern "C" {
 		ALenum error;
 		ALint rate;
 		ALint channels;
-		device = alcOpenDevice(NULL); /* Use the default device */
+		const char * devicename = alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER);
+		devicename+= strlen(devicename) + 1;
+		//device = alcOpenDevice("DirectSound3D"); /* Use the default device */
+		//device = alcOpenDevice(devicename); /* Use the default device */
+		//device = alcOpenDevice(NULL);
+		device = alcOpenDevice(devicename);
 		if (!device) error_exit("failed to open device");
 		context = alcCreateContext(device, NULL);
 		alcMakeContextCurrent(context);
@@ -153,4 +158,3 @@ extern "C" {
 
 		pthread_create(&tid, NULL, audio_start, af);
 	}
-} /* extern "C" */

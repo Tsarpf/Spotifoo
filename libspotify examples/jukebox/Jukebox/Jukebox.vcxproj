@@ -41,9 +41,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CODE\GitHub\Spotifoo\libspotify examples\openal-soft-1.16.0-bin\include;C:\CODE\GitHub\Spotifoo\libspotify examples;C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\CODE\GitHub\Spotifoo\libspotify examples\openal-soft-1.16.0-bin\libs\Win32;C:\CODE\GitHub\Spotifoo\libspotify examples\lib;C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
-    <ExecutablePath>C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\dll\x86;$(VCInstallDir)bin;$(WindowsSDK_ExecutablePath_x86);$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(MSBuildToolsPath32);$(VSInstallDir);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
+    <IncludePath>H:\Downloads\GiGo\openal-soft-1.16.0\openal-soft-1.16.0\Alc;H:\Downloads\GiGo\openal-soft-1.16.0\openal-soft-1.16.0\include;C:\CODE\GitHub\Spotifoo\libspotify examples;C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>H:\Downloads\GiGo\openal-soft-1.16.0\openal-soft-1.16.0\build\Release;C:\CODE\GitHub\Spotifoo\libspotify examples\lib;C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <ExecutablePath>H:\Downloads\GiGo\openal-soft-1.16.0\openal-soft-1.16.0\build\Debug;C:\CODE\GitHub\Spotifoo\libspotify examples\pthreads\dll\x86;$(VCInstallDir)bin;$(WindowsSDK_ExecutablePath_x86);$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(MSBuildToolsPath32);$(VSInstallDir);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -60,7 +60,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenAL32.lib;libspotify.lib;pthreadVC2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Dsound.lib;OpenAL32.lib;libspotify.lib;pthreadVCE2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\appkey.c" />
     <ClCompile Include="..\audio.cpp" />
     <ClCompile Include="..\jukebox.cpp" />
     <ClCompile Include="..\openal-audio.cpp" />

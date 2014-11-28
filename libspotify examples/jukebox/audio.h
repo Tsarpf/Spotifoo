@@ -32,14 +32,13 @@
 #include "queue.h"
 
 
-extern "C" {
 	/* --- Types --- */
 	typedef struct audio_fifo_data {
 		TAILQ_ENTRY(audio_fifo_data) link;
 		int channels;
 		int rate;
 		int nsamples;
-		int16_t samples[0];
+		int16_t samples[1];
 	} audio_fifo_data_t;
 
 	typedef struct audio_fifo {
@@ -54,6 +53,5 @@ extern "C" {
 	extern void audio_init(audio_fifo_t *af);
 	extern void audio_fifo_flush(audio_fifo_t *af);
 	audio_fifo_data_t* audio_get(audio_fifo_t *af);
-}
 
 #endif /* _JUKEBOX_AUDIO_H_ */

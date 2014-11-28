@@ -28,7 +28,6 @@
 #include "audio.h"
 #include <stdlib.h>
 
-extern "C" {
 	audio_fifo_data_t* audio_get(audio_fifo_t *af)
 	{
 		audio_fifo_data_t *afd;
@@ -59,4 +58,3 @@ extern "C" {
 		af->qlen = 0;
 		pthread_mutex_unlock(&af->mutex);
 	}
-}
