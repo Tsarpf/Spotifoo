@@ -215,14 +215,42 @@ static void log_message(sp_session *session, const char *msg)
 /**
  * The session callbacks
  */
+typedef void (SP_CALLCONV *logged_in_fn)(sp_session *session, sp_error error);
+typedef void (SP_CALLCONV *notify_main_thread_fn)(sp_session *session);
+typedef int (SP_CALLCONV *music_delivery_fn)(sp_session *session, const sp_audioformat *format, const void *frames, int num_frames);
+typedef void (SP_CALLCONV *metadata_updated_fn)(sp_session *session);
+typedef void (SP_CALLCONV *play_token_lost_fn)(sp_session *session);
+typedef void (SP_CALLCONV *log_message_fn)(sp_session *session, const char *data);
+typedef void (SP_CALLCONV *end_of_track_fn)(sp_session *session);
+
+/*
 static sp_session_callbacks session_callbacks = {
-	.logged_in = &logged_in,
-	.notify_main_thread = &notify_main_thread,
-	.music_delivery = &music_delivery,
-	.metadata_updated = &metadata_updated,
-	.play_token_lost = &play_token_lost,
-	.log_message = &log_message,
-	.end_of_track = &end_of_track,
+(logged_in_fn)&logged_in,
+0, //logged out
+(metadata_updated_fn)&metadata_updated,
+0, //connection error
+0, //message_to_user
+(notify_main_thread_fn)&notify_main_thread,
+(music_delivery_fn)&music_delivery,
+(play_token_lost_fn)&play_token_lost,
+(log_message_fn)NULL,
+(end_of_track_fn)&end_of_track,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+}
+*/
+
+static sp_session_callbacks session_callbacks = {
+		(logged_in_fn)&logged_in,
+		0, //logged out
+		(metadata_updated_fn)&metadata_updated,
+		0, //connection error
+		0, //message_to_user
+		(notify_main_thread_fn)&notify_main_thread,
+		(music_delivery_fn)&music_delivery,
+		(play_token_lost_fn)&play_token_lost,
+		(log_message_fn)&log_message,
+		(end_of_track_fn)&end_of_track,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
 /**
@@ -230,13 +258,13 @@ static sp_session_callbacks session_callbacks = {
  * external, so we set it in main() instead.
  */
 static sp_session_config spconfig = {
-	.api_version = SPOTIFY_API_VERSION,
-	.cache_location = "tmp",
-	.settings_location = "tmp",
-	.application_key = g_appkey,
-	.application_key_size = 0, // Set in main()
-	.user_agent = "spotify-playtrack-example",
-	.callbacks = &session_callbacks,
+	SPOTIFY_API_VERSION,
+	"tmp",
+	"tmp",
+	g_appkey,
+	0, // Set in main()
+	"spotify-playtrack-example",
+	&session_callbacks,
 	NULL,
 };
 /* -------------------------  END SESSION CALLBACKS  ----------------------- */
@@ -267,7 +295,38 @@ static void usage(const char *progname)
 	fprintf(stderr, "usage: %s -u <username> -p <password>\n", progname);
 }
 
-int main(int argc, char **argv)
+/*
+static void TIMEVAL_TO_TIMESPEC(const struct timeval *tv, struct timespec *ts)
+{
+	ts->tv_sec = tv->tv_sec;
+	ts->tv_nsec = tv->tv_usec * 1000;
+	if (ts->tv_nsec >= 1000000000) ts->tv_nsec -= 1000000000, ++ts->tv_sec;
+}
+
+int gettimeofday(struct timeval * tp, struct timezone * tzp)
+{
+	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
+	static const uint64_t EPOCH = ((uint64_t)116444736000000000ULL);
+
+	SYSTEMTIME  system_time;
+	FILETIME    file_time;
+	uint64_t    time;
+
+	GetSystemTime(&system_time);
+	SystemTimeToFileTime(&system_time, &file_time);
+	time = ((uint64_t)file_time.dwLowDateTime);
+	time += ((uint64_t)file_time.dwHighDateTime) << 32;
+
+	tp->tv_sec = (long)((time - EPOCH) / 10000000L);
+	tp->tv_usec = (long)(system_time.wMilliseconds * 1000);
+	return 0;
+}
+*/
+
+extern int gettimeofday(struct timeval * tp, struct timezone * tzp);
+extern void TIMEVAL_TO_TIMESPEC(const struct timeval *tv, struct timespec *ts);
+
+int mainThang(int argc, char **argv)
 {
 	sp_session *sp;
 	sp_error err;
@@ -289,10 +348,12 @@ int main(int argc, char **argv)
 		}
 	}
 
+	/*
 	if (!username || !password) {
 		usage(basename(argv[0]));
 		exit(1);
 	}
+	*/
 
 	audio_init(&g_audiofifo);
 

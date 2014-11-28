@@ -153,4 +153,4 @@ extern "C" {
 
 		pthread_create(&tid, NULL, audio_start, af);
 	}
-}
+} /* extern "C" */

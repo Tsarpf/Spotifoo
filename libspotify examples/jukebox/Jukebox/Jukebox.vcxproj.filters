@@ -15,19 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\audio.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="getopt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\playtrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\jukebox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\openal-audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,8 +44,5 @@
     <ClInclude Include="strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Makefile" />
   </ItemGroup>
 </Project>
