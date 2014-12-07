@@ -74,7 +74,6 @@
 		ALint rate;
 		ALint channels;
 		const char * devicename = alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER);
-		devicename+= strlen(devicename) + 1;
 		//device = alcOpenDevice("DirectSound3D"); /* Use the default device */
 		//device = alcOpenDevice(devicename); /* Use the default device */
 		//device = alcOpenDevice(NULL);

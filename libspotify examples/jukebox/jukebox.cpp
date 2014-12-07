@@ -40,9 +40,7 @@
 //#include <sys/time.h>
 #include <WinSock2.h>
 
-
 #include <libspotify/api.h>
-
 
 #include "audio.h"
 
@@ -86,7 +84,7 @@ extern "C" {
 	 *
 	 * The function simply starts playing the first track of the playlist.
 	 */
-	static void try_jukebox_start(void)
+	static void SP_CALLCONV  try_jukebox_start(void)
 	{
 		sp_track *t;
 
@@ -126,8 +124,8 @@ extern "C" {
 		printf("jukebox: Now playing \"%s\"...\n", sp_track_name(t));
 		fflush(stdout);
 
-		sp_session_player_load(g_sess, t);
-		sp_session_player_play(g_sess, 1);
+		sp_error asdf = sp_session_player_load(g_sess, t);
+		sp_error fdsa = sp_session_player_play(g_sess, 1);
 	}
 
 	/* --------------------------  PLAYLIST CALLBACKS  ------------------------- */
@@ -140,7 +138,7 @@ extern "C" {
 	 * @param  position    Where the tracks were inserted
 	 * @param  userdata    The opaque pointer
 	 */
-	static void tracks_added(sp_playlist *pl, sp_track * const *tracks,
+	static void SP_CALLCONV  tracks_added(sp_playlist *pl, sp_track * const *tracks,
 							 int num_tracks, int position, void *userdata)
 	{
 		if (pl != g_jukeboxlist)
@@ -159,7 +157,7 @@ extern "C" {
 	 * @param  num_tracks  The number of tracks in the \c tracks array
 	 * @param  userdata    The opaque pointer
 	 */
-	static void tracks_removed(sp_playlist *pl, const int *tracks,
+	static void SP_CALLCONV  tracks_removed(sp_playlist *pl, const int *tracks,
 							   int num_tracks, void *userdata)
 	{
 		int i, k = 0;
@@ -187,7 +185,7 @@ extern "C" {
 	 * @param  new_position  To where the tracks were moved
 	 * @param  userdata      The opaque pointer
 	 */
-	static void tracks_moved(sp_playlist *pl, const int *tracks,
+	static void SP_CALLCONV  tracks_moved(sp_playlist *pl, const int *tracks,
 							 int num_tracks, int new_position, void *userdata)
 	{
 		if (pl != g_jukeboxlist)
@@ -206,7 +204,7 @@ extern "C" {
 
 	 */
 
-	static void playlist_renamed(sp_playlist *pl, void *userdata)
+	static void SP_CALLCONV  playlist_renamed(sp_playlist *pl, void *userdata)
 	{
 		const char *name = sp_playlist_name(pl);
 
@@ -260,11 +258,12 @@ extern "C" {
 	 * @param  position      Index of the added playlist
 	 * @param  userdata      The opaque pointer
 	 */
-	static void playlist_added(sp_playlistcontainer *pc, sp_playlist *pl,
+	static void SP_CALLCONV  playlist_added(sp_playlistcontainer *pc, sp_playlist *pl,
 							   int position, void *userdata)
 	{
 		sp_playlist_add_callbacks(pl, &pl_callbacks, NULL);
 
+		printf("playlist loaded: %s\n", sp_playlist_name(pl));
 		if (!strcasecmp(sp_playlist_name(pl), g_listname)) {
 			g_jukeboxlist = pl;
 			try_jukebox_start();
@@ -281,7 +280,7 @@ extern "C" {
 	 * @param  position      Index of the removed playlist
 	 * @param  userdata      The opaque pointer
 	 */
-	static void playlist_removed(sp_playlistcontainer *pc, sp_playlist *pl,
+	static void SP_CALLCONV  playlist_removed(sp_playlistcontainer *pc, sp_playlist *pl,
 								 int position, void *userdata)
 	{
 		sp_playlist_remove_callbacks(pl, &pl_callbacks, NULL);
@@ -295,7 +294,7 @@ extern "C" {
 	 * @param  pc            The playlist container handle
 	 * @param  userdata      The opaque pointer
 	 */
-	static void container_loaded(sp_playlistcontainer *pc, void *userdata)
+	static void SP_CALLCONV  container_loaded(sp_playlistcontainer *pc, void *userdata)
 	{
 		fprintf(stderr, "jukebox: Rootlist synchronized (%d playlists)\n",
 			sp_playlistcontainer_num_playlists(pc));
@@ -327,7 +326,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#logged_in
 	 */
-	static void logged_in(sp_session *sess, sp_error error)
+	static void SP_CALLCONV logged_in(sp_session *sess, sp_error error)
 	{
 		sp_playlistcontainer *pc = sp_session_playlistcontainer(sess);
 		int i;
@@ -377,7 +376,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#notify_main_thread
 	 */
-	static void notify_main_thread(sp_session *sess)
+	static void SP_CALLCONV notify_main_thread(sp_session *sess)
 	{
 		pthread_mutex_lock(&g_notify_mutex);
 		g_notify_do = 1;
@@ -390,7 +389,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#music_delivery
 	 */
-	static int music_delivery(sp_session *sess, const sp_audioformat *format,
+	static int SP_CALLCONV music_delivery(sp_session *sess, const sp_audioformat *format,
 							  const void *frames, int num_frames)
 	{
 		audio_fifo_t *af = &g_audiofifo;
@@ -434,7 +433,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#end_of_track
 	 */
-	static void end_of_track(sp_session *sess)
+	static void SP_CALLCONV  end_of_track(sp_session *sess)
 	{
 		pthread_mutex_lock(&g_notify_mutex);
 		g_playback_done = 1;
@@ -452,7 +451,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#metadata_updated
 	 */
-	static void metadata_updated(sp_session *sess)
+	static void SP_CALLCONV  metadata_updated(sp_session *sess)
 	{
 		try_jukebox_start();
 	}
@@ -463,7 +462,7 @@ extern "C" {
 	 *
 	 * @sa sp_session_callbacks#play_token_lost
 	 */
-	static void play_token_lost(sp_session *sess)
+	static void SP_CALLCONV  play_token_lost(sp_session *sess)
 	{
 		audio_fifo_flush(&g_audiofifo);
 
@@ -503,6 +502,21 @@ extern "C" {
 		(end_of_track_fn)&end_of_track,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	};
+	/*
+	static sp_session_callbacks session_callbacks = {
+		(logged_in_fn)&logged_in,
+		(logged_out_fn)&logged_out, //logged out
+		(metadata_updated_fn)&metadata_updated,
+		0, //connection error
+		0, //message_to_user
+		(notify_main_thread_fn)&notify_main_thread,
+		0,
+		0,
+		0,
+		0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	};
+	*/
 
 	/**
 	 * The session configuration. Note that application_key_size is an external, so
@@ -517,7 +531,7 @@ extern "C" {
 	 *
 	 * Called from the main loop when the music_delivery() callback has set g_playback_done.
 	 */
-	static void track_ended(void)
+	static void SP_CALLCONV  track_ended(void)
 	{
 		int tracks = 0;
 
@@ -572,7 +586,8 @@ extern "C" {
 
 	int main(int argc, char **argv)
 	{
-		extern const signed char g_appkey[];
+		//extern const char g_appkey[];
+		extern const uint8_t g_appkey[];
 		extern const size_t g_appkey_size;
 		sp_session_config spconfig;
 
@@ -587,20 +602,11 @@ extern "C" {
 
 		spconfig.user_agent = "jukebewkx";
 
+		//spconfig.callbacks = 0;
 		spconfig.callbacks = &session_callbacks;
 
 		spconfig.compress_playlists = 0;
 
-
-		//	SPOTIFY_API_VERSION,
-		//	"tmp",
-		//	"tmp",
-		//	g_appkey,
-		//	0, // Set in main()
-		//	"spotify-jukebox-example",
-		//	&session_callbacks,
-		//	NULL, 0, 0, 0, 0, 0, 0, 0, 0
-		//};
 		sp_session *sp;
 		sp_error err;
 		int next_timeout = 0;
@@ -636,13 +642,18 @@ extern "C" {
 			exit(1);
 		}
 
-		audio_init(&g_audiofifo);
+		//audio_init(&g_audiofifo);
 
 		/* Create session */
 		spconfig.application_key_size = g_appkey_size;
 
 		pthread_mutex_init(&g_notify_mutex, NULL);
 		pthread_cond_init(&g_notify_cond, NULL);
+
+		for (int i = 0; i < 322; i++)
+		{
+			char penis = g_appkey[i];
+		}
 
 		err = sp_session_create(&spconfig, &sp);
 
