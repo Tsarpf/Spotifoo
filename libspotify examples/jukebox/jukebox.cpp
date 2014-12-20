@@ -42,7 +42,6 @@
 
 #include <libspotify/api.h>
 
-#include "audio.h"
 
 
 
@@ -56,7 +55,7 @@ extern "C" {
 	/// The size of the application key.
 
 	/// The output queue for audo data
-	static audio_fifo_t g_audiofifo;
+	//static audio_fifo_t g_audiofifo;
 	/// Synchronization mutex for the main thread
 	static pthread_mutex_t g_notify_mutex;
 	/// Synchronization condition variable for the main thread
@@ -105,7 +104,7 @@ extern "C" {
 
 		if (g_currenttrack && t != g_currenttrack) {
 			/* Someone changed the current track */
-			audio_fifo_flush(&g_audiofifo);
+			//audio_fifo_flush(&g_audiofifo);
 			sp_session_player_unload(g_sess);
 			g_currenttrack = NULL;
 		}
@@ -392,37 +391,37 @@ extern "C" {
 	static int SP_CALLCONV music_delivery(sp_session *sess, const sp_audioformat *format,
 							  const void *frames, int num_frames)
 	{
-		audio_fifo_t *af = &g_audiofifo;
-		audio_fifo_data_t *afd;
+		//audio_fifo_t *af = &g_audiofifo;
+		//audio_fifo_data_t *afd;
 		size_t s;
 
 		if (num_frames == 0)
 			return 0; // Audio discontinuity, do nothing
 
-		pthread_mutex_lock(&af->mutex);
+		//pthread_mutex_lock(&af->mutex);
 
 		/* Buffer one second of audio */
-		if (af->qlen > format->sample_rate) {
-			pthread_mutex_unlock(&af->mutex);
+		//if (af->qlen > format->sample_rate) {
+			//pthread_mutex_unlock(&af->mutex);
 
-			return 0;
-		}
+			//return 0;
+		//}
 
 		s = num_frames * sizeof(int16_t) * format->channels;
 
-		afd = (audio_fifo_data_t*) malloc(sizeof(*afd) + s);
-		memcpy(afd->samples, frames, s);
+		//afd = (audio_fifo_data_t*) malloc(sizeof(*afd) + s);
+		//memcpy(afd->samples, frames, s);
 
-		afd->nsamples = num_frames;
+		//afd->nsamples = num_frames;
 
-		afd->rate = format->sample_rate;
-		afd->channels = format->channels;
+		//afd->rate = format->sample_rate;
+		//afd->channels = format->channels;
 
-		TAILQ_INSERT_TAIL(&af->q, afd, link);
-		af->qlen += num_frames;
+		//TAILQ_INSERT_TAIL(&af->q, afd, link);
+		//af->qlen += num_frames;
 
-		pthread_cond_signal(&af->cond);
-		pthread_mutex_unlock(&af->mutex);
+		//pthread_cond_signal(&af->cond);
+		//pthread_mutex_unlock(&af->mutex);
 
 		return num_frames;
 	}
@@ -464,7 +463,7 @@ extern "C" {
 	 */
 	static void SP_CALLCONV  play_token_lost(sp_session *sess)
 	{
-		audio_fifo_flush(&g_audiofifo);
+		//audio_fifo_flush(&g_audiofifo);
 
 		if (g_currenttrack != NULL) {
 			sp_session_player_unload(g_sess);
